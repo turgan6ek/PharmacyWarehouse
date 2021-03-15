@@ -2,9 +2,11 @@ package kz.iitu.test.service.impl;
 
 import kz.iitu.test.dao.MedicineDao;
 import kz.iitu.test.dao.RequestDao;
+import kz.iitu.test.entity.Goal;
 import kz.iitu.test.entity.Medicines;
 import kz.iitu.test.entity.Requests;
 import kz.iitu.test.event.AcceptRequestEvent;
+import kz.iitu.test.event.GoalEvent;
 import kz.iitu.test.service.MedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -47,7 +49,7 @@ public class MedicServiceImpl implements MedicineService, ApplicationEventPublis
             Medicines medicines = medicinesOptional.get();
             if (medicines.getQuantity() >= requests.getQuantity()) {
                 medicines.setQuantity(medicines.getQuantity() - requests.getQuantity());
-                System.out.println("The request with ID: " + requests.getId() + " is accepted.");
+                System.out.println("The request with ID: " + requests.getId() + " is accepted for " + requests.getId() * medicines.getPrice());
                 medicineDao.save(medicines);
                 requestDao.deleteById(requests.getId());
             }
@@ -55,6 +57,7 @@ public class MedicServiceImpl implements MedicineService, ApplicationEventPublis
                 System.out.println("There is only " + medicines.getQuantity() + " such medicine left in warehouse, so the request will be accepted later.");
             }
         }
+
     }
     @Override
     public void getMedicines() {
@@ -91,6 +94,8 @@ public class MedicServiceImpl implements MedicineService, ApplicationEventPublis
                 this.acceptReq(req);
             }
         }
+        this.eventPublisher.publishEvent(new GoalEvent(this, new Goal()));
+        System.out.println("Requests are up-to-date.");
     }
 
     @Override
