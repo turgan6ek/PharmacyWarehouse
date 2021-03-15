@@ -25,7 +25,7 @@ public class WarehouseSystem {
     Long goals = goal.getGoal();
     @PostConstruct
    void showMenu() {
-        System.out.println("\n===========================================");
+        System.out.println("\n================SYSTEM=====================");
         System.out.println("1. Warehouse side");
         System.out.println("2. Pharmacy side");
         System.out.println("3. Exit");
@@ -56,7 +56,7 @@ public class WarehouseSystem {
     }
     void showWarehouseMenu(){
         Long left = goals - accepted;
-        System.out.println("\n===========================================");
+        System.out.println("\n==============WAREHOUSE====================");
         System.out.println("1. Get medicines");
         System.out.println("2. Set goal");
         System.out.println("3. List of requests");
@@ -86,6 +86,7 @@ public class WarehouseSystem {
                     System.out.println("There is no requests for now.");
                 }
                 else {
+                    System.out.println("List of requests: ");
                     for (Requests req: requestService.findAll()) {
                         System.out.println(req.getId() + " - Name: " + req.getName() + " - Manufacturer: " + req.getManufacturer() +
                                 " - Quantity: " + req.getQuantity());
@@ -98,6 +99,7 @@ public class WarehouseSystem {
                     System.out.println("There is no requests for now.");
                 }
                 else {
+                    System.out.println("List of medicines: ");
                     for (Medicines req: medicineService.findAll()) {
                         System.out.println(req.getId() + " - Name: " + req.getName() + " - Manufacturer: " + req.getManufacturer() +
                                 " - Quantity: " + req.getQuantity() + " - Price: " + req.getPrice());
@@ -120,7 +122,7 @@ public class WarehouseSystem {
         }
     }
     void showPharmacyMenu() {
-        System.out.println("\n===========================================");
+        System.out.println("\n================PHARMACY===================");
         System.out.println("1. Make request");
         System.out.println("2. List of medicines");
         System.out.println("3. Back");

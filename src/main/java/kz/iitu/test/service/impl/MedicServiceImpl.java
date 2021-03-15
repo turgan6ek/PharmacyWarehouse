@@ -26,6 +26,8 @@ public class MedicServiceImpl implements MedicineService, ApplicationEventPublis
     private RequestDao requestDao;
     @Autowired
     private ApplicationEventPublisher eventPublisher;
+    @Autowired
+    Goal goal;
     Scanner scan = new Scanner(System.in);
     @Override
     public void create(Medicines medicines) {
@@ -49,13 +51,15 @@ public class MedicServiceImpl implements MedicineService, ApplicationEventPublis
             Medicines medicines = medicinesOptional.get();
             if (medicines.getQuantity() >= requests.getQuantity()) {
                 medicines.setQuantity(medicines.getQuantity() - requests.getQuantity());
-                System.out.println("The request with ID: " + requests.getId() + " is accepted for " + requests.getId() * medicines.getPrice());
+                System.out.println("The request with ID: " + requests.getId() + " is accepted for " + requests.getQuantity() * medicines.getPrice() + " tenges");
                 medicineDao.save(medicines);
                 requestDao.deleteById(requests.getId());
+                goal.setAccepted(goal.getAccepted() + requests.getQuantity());
             }
             else {
-                System.out.println("There is only " + medicines.getQuantity() + " such medicine left in warehouse, so the request will be accepted later.");
+                System.out.println("There is only " + medicines.getQuantity() + " amount of " + medicines.getName() + " left in warehouse, so the request will be accepted later.");
             }
+            eventPublisher.publishEvent(new GoalEvent(this, goal));
         }
 
     }
