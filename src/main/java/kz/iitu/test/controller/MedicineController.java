@@ -34,7 +34,7 @@ public class MedicineController {
 
     @PostMapping("/add")
     @ApiOperation(value = "To add medicine (allowed to Manager and admin)")
-    public Medicine addMedicine(Medicine medicine) {
+    public Medicine addMedicine(@RequestBody Medicine medicine) {
         medicineService.addMedicine(medicine);
         return medicine;
     }

@@ -30,9 +30,10 @@ public class Firm implements UserDetails {
             joinColumns = {@JoinColumn(name = "firm_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles = new HashSet<>();
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return roles;
     }
 
     @Override
