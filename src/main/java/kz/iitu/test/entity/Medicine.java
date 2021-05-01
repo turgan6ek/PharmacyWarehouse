@@ -1,5 +1,6 @@
 package kz.iitu.test.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -13,7 +14,7 @@ public class Medicine {
     private String name;
     private String manufacturer;
     private double price;
-
+    @JsonIgnore
     @OneToOne(mappedBy = "medicine", fetch = FetchType.LAZY)
     private Request request;
 }

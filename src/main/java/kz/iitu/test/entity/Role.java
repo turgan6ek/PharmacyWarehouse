@@ -1,5 +1,6 @@
 package kz.iitu.test.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +19,7 @@ public class Role implements GrantedAuthority {
     private Long id;
     @Column(unique = true)
     private String name;
-
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private Set<Firm> firms = new HashSet<>();
 

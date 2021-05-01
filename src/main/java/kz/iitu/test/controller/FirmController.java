@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import kz.iitu.test.entity.Firm;
 import kz.iitu.test.entity.Role;
+import kz.iitu.test.repository.FirmRepository;
 import kz.iitu.test.repository.RoleRepository;
 import kz.iitu.test.service.FirmService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,10 @@ public class FirmController {
 
     @Autowired
     FirmService firmService;
+
+    @Autowired
+    FirmRepository firmRepository;
+
     @Autowired
     RoleRepository roleRepository;
     @GetMapping("")
@@ -49,6 +54,13 @@ public class FirmController {
     @Transactional
     @ApiOperation(value = "Method to register", response = List.class)
     public void registerFirm(@RequestBody Firm firm) {
+        Firm existed_firm = firmRepository.findByUsername(firm.getUsername());
+        if (existed_firm != null){
+            throw new RuntimeException("Username: " + firm.getUsername() + " is already exist!!!");
+        }
+        if (firm.getUsername().isEmpty() || firm.getPassword().isEmpty()){
+            throw new RuntimeException("Username and Password can not be empty!!!");
+        }
         Role role = roleRepository.findDistinctByName("USER");
         firm.getRoles().add(role);
         firmService.addFirm(firm);
@@ -56,9 +68,18 @@ public class FirmController {
     @PostMapping("/registerManager")
     @ApiOperation(value = "Method to register", response = List.class)
     public void registerManager(@RequestBody Firm firm) {
-        Role role = roleRepository.findDistinctByName("MANAGER");
-        firm.getRoles().add(role);
-        firmService.addFirm(firm);
+        Firm existed_firm = firmRepository.findByUsername(firm.getUsername());
+        if (existed_firm != null){
+            throw new RuntimeException("Username: " + firm.getUsername() + " is already exist!!!");
+        }
+        else if (firm.getUsername().isEmpty() || firm.getPassword().isEmpty()){
+            throw new RuntimeException("Username and Password can not be empty!!!");
+        } else {
+            Role role = roleRepository.findDistinctByName("MANAGER");
+            firm.getRoles().add(role);
+            firmService.addFirm(firm);
+        }
+
     }
     @GetMapping("/{id}")
     @ApiOperation(value = "Method to get one Firm", response = List.class)

@@ -1,5 +1,6 @@
 package kz.iitu.test.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,10 +19,11 @@ public class Firm implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Column(unique = true)
     private String username;
     private String password;
     private String address;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "firm", fetch = FetchType.LAZY)
     private List<Request> requestsList;
 
