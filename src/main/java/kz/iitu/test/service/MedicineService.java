@@ -1,16 +1,13 @@
 package kz.iitu.test.service;
 
-import kz.iitu.test.entity.Medicines;
-import kz.iitu.test.entity.Requests;
+import kz.iitu.test.entity.Medicine;
 
 import java.util.List;
 
 public interface MedicineService {
-    void create(Medicines medicines);
-    void update(Long id, Medicines medicines);
-    void delete(Long id, Medicines medicines);
-    void acceptReq(Requests requests);
-    void getMedicines();
-    void acceptAll();
-    List<Medicines> findAll();
+    List<Medicine> findMedicines();
+    void addMedicine(Medicine medicine);
+    void deleteMedicine(Medicine medicine);
+    void updateMedicine(Medicine medicine);
+    Medicine getOne(Long id);
 }
