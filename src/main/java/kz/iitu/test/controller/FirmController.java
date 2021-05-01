@@ -58,12 +58,13 @@ public class FirmController {
         if (existed_firm != null){
             throw new RuntimeException("Username: " + firm.getUsername() + " is already exist!!!");
         }
-        if (firm.getUsername().isEmpty() || firm.getPassword().isEmpty()){
+        else if (firm.getUsername().isEmpty() || firm.getPassword().isEmpty()){
             throw new RuntimeException("Username and Password can not be empty!!!");
+        } else {
+            Role role = roleRepository.findDistinctByName("USER");
+            firm.getRoles().add(role);
+            firmService.addFirm(firm);
         }
-        Role role = roleRepository.findDistinctByName("USER");
-        firm.getRoles().add(role);
-        firmService.addFirm(firm);
     }
     @PostMapping("/registerManager")
     @ApiOperation(value = "Method to register", response = List.class)
