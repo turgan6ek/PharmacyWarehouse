@@ -8,11 +8,12 @@ import kz.iitu.test.entity.Request;
 import kz.iitu.test.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/requests")
 @Api(value = "Request Controller Class")
 @ApiResponses( value = {

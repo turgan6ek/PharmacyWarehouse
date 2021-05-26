@@ -21,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().
                 disable().
                 authorizeRequests().
-                antMatchers("/auth/**").permitAll().
+                antMatchers("/login/**").permitAll().
                 antMatchers("/firms/register/**").permitAll().
                 antMatchers("/firms/registerManager/**").hasAnyAuthority("ADMIN").
                 antMatchers("/medicines/list").permitAll().
@@ -29,8 +29,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 antMatchers("/requests/make").hasAuthority("USER").
                 antMatchers("/requests/**").hasAnyAuthority("ADMIN", "MANAGER").
                 antMatchers("/firms/**").hasAuthority("ADMIN").
-                and().addFilter(new JwtTokenGeneratorFilter(authenticationManager())).
-                addFilterAfter(new JwtTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                and().
+                formLogin().
+                loginProcessingUrl("/login").
+                defaultSuccessUrl("/welcome", true).
+                failureUrl("/error/**").
+                and().
+                logout().
+                logoutUrl("/perform_logout").
+                deleteCookies("JSESSIONID");
     }
 
     @Bean

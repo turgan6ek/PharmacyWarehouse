@@ -7,11 +7,13 @@ import io.swagger.annotations.ApiResponses;
 import kz.iitu.test.entity.Medicine;
 import kz.iitu.test.service.MedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/medicines")
 @Api(value = "Medicine Controller Class")
 @ApiResponses( value = {
@@ -28,8 +30,10 @@ public class MedicineController {
 
     @GetMapping("/list")
     @ApiOperation(value = "To get list of all medicines", response = List.class)
-    public List<Medicine> findAllMedicines() {
-        return medicineService.findMedicines();
+    public String findAllMedicines(Model model) {
+        List <Medicine> medicineList = medicineService.findMedicines();
+        model.addAttribute("medicines", medicineList);
+        return "medicinesList";
     }
 
     @PostMapping("/add")
@@ -57,4 +61,7 @@ public class MedicineController {
     public Medicine getOne(@PathVariable Long id) {
         return medicineService.getOne(id);
     }
+
+
+
 }

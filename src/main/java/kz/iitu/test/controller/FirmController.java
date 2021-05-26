@@ -10,15 +10,18 @@ import kz.iitu.test.repository.FirmRepository;
 import kz.iitu.test.repository.RoleRepository;
 import kz.iitu.test.service.FirmService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@RestController
+@Controller
 @RequestMapping("/firms")
 @Api(value = "Firm Controller Class")
 @ApiResponses( value = {
@@ -65,6 +68,21 @@ public class FirmController {
             firm.getRoles().add(role);
             firmService.addFirm(firm);
         }
+    }
+    @PostMapping("/registerFirm")
+    @Transactional
+    @ApiOperation(value = "Method to register", response = List.class)
+    public String registerNewFirm(HttpServletRequest request, @RequestParam String name, @RequestParam String username, @RequestParam String password, @RequestParam String address) {
+        Firm firm = new Firm();
+        firm.setName(name);
+        if (firmRepository.findByUsername(username) != null) {
+            return "error";
+        }
+        firm.setUsername(username);
+        firm.setPassword(password);
+        firm.setAddress(address);
+        registerFirm(firm);
+        return request.getContextPath() + "welcome";
     }
     @PostMapping("/registerManager")
     @ApiOperation(value = "Method to register", response = List.class)
